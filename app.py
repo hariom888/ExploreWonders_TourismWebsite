@@ -1,13 +1,32 @@
 from flask import Flask, render_template, request, jsonify
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
 
 app = Flask(__name__)
 
-# Home page
+# -----------------------------
+# Scheduled Task
+# -----------------------------
+def my_scheduled_task():
+    # Example task: just prints for now
+    print("Scheduled task executed! You can update DB or cache here.")
+
+# Initialize background scheduler
+scheduler = BackgroundScheduler()
+# Run task every 5 minutes (adjust as needed)
+scheduler.add_job(func=my_scheduled_task, trigger="interval", minutes=2)
+scheduler.start()
+
+# Shut down scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
+
+# -----------------------------
+# Routes
+# -----------------------------
 @app.route('/')
 def home():
     return render_template('home.html')
 
-# Other pages
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -42,5 +61,8 @@ def submit():
     data = request.get_json() or {}
     return jsonify({"status": "ok", "received": data})
 
+# -----------------------------
+# Run app
+# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
