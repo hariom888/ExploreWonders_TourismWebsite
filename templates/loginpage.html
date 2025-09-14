@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login Page </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+        body{background-image: url("https://wallpaperaccess.com/full/2465604.jpg"); background-size: cover; min-height: 100vh; margin: 0;}
+        .wrapper{width: 650px; height: 640px; background-color: rgba(255, 255, 255, 0.8); border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin: 50px auto;} 
+        .login_box{width: 100%; padding: 30px;}
+        .login-header{font-size: 45px; margin-bottom: 30px; text-align: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); padding: 10px;}
+        .input_box{position: relative; margin-bottom: 20px;}
+        .input-field{width: 100%; padding: 10px; font-size: 30px; border: 1px solid #ccc; border-radius: 10px;}
+        .input-field:focus{border-color: #aaa; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}
+        .label{font-size: 25px; color: black;}
+        .input-field:focus{font-size: 30px; color: #666;}
+        .icon{position: absolute; top: 10px; right: 10px; font-size: 20px; color: #aaa;}
+        .remember-forget{display: flex; justify-content: space-between; margin-bottom: 20px;}
+        .remember-me{display: flex; align-items: center; font-size: 25px;}
+        .remember-me input[type="checkbox"]{width: 20px; height: 20px; margin-right: 10px;}
+        .forgot{text-align: right; padding-bottom: 20px; padding-top: 20px; font-size: 25px;}
+        .forgot a{text-decoration: none; color: #666;}
+        .forgot a:hover{color: #333;}
+        .input-submit{width: 100%; padding: 10px; font-size: 30px; border: none; border-radius: 10px; background-color: #4CAF50; color: #fff; cursor: pointer;}
+        .input-submit:hover{background-color: #3e8e41;}
+        .register{text-align: center; margin-top: 20px; font-size: 25px;}
+        .register a{text-decoration: none; color: #666;}
+        .register a:hover{color: #333;}
+        .back-to-home{text-align: center; margin-top: 20px; font-size: 25px;}
+        .back-to-home a{text-decoration: none; color: #666;}
+        .back-to-home a:hover{color: #333;}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="login_box">
+            <form onsubmit="return validateForm()">
+                <div class="login-header">
+                    <span> <b> LOGIN </b> </span>
+                </div>
+                <div class="input_box">
+                    <label for="name" class="label"> <span class="iconify" data-icon="mdi-account-circle"></span> Username </label>
+                    <input type="text" id="name" name="name" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <label for="pass" class="label"> <span class="iconify" data-icon="mdi-key"></span> Password </label>
+                    <input type="password" id="pass" name="password" class="input-field" required>
+                </div>
+                <div class="remember-forget">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember"> Remember me </label>
+                    </div>
+                    <div class="forgot">
+                        <a href="{{ url_for('resetpassword') }}"> Forgot password? </a>
+                    </div>
+                </div>
+                <div class="input_box">
+                    <input type="submit" class="input-submit" value="Login" onclick="redirectToHome()"> 
+                </div>
+            </form>
+            <div class="register">
+                <span> Don't have an account? <a href="{{ url_for('registerpage') }}"> Register </a> </span>
+                <div class="back-to-home">
+                    <a href="{{ url_for('home') }}"> Back to Home </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function validateForm() {
+        const name = document.getElementById("name").value;
+        const password = document.getElementById("pass").value;
+
+        const namePattern = /^[A-Za-z\s]{3,}$/; 
+
+        if (!namePattern.test(name)) {
+            alert("Name must be at least 3 characters long and contain only letters and spaces.");
+            return false;
+        }
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long.");
+            return false;
+        }
+
+        if (confirm("Confirm Login?")) {
+            window.location.href = "{{ url_for('home') }}";
+            return false; 
+        }
+        return false;
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Contact Us </title>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+
+        body{transition: background-color 0.3s, color 0.3s;} 
+        body.dark-mode{background-color: #1a1a1a; color: #fff;} 
+        
+        .navbar{background-color: rgba(0, 0, 0, 0.8); padding: 20px 50px; position: fixed; width: 100%; z-index: 1000;}
+        .nav-content{display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .logo{color: #fff; font-size: 28px; font-weight: bold;}
+        .nav-links{display: flex; gap: 30px; align-items: center;}
+        .nav-links a{color: #fff; text-decoration: none; font-size: 18px; transition: color 0.3s;}
+        .nav-links a:hover{color: #ffd700;}
+
+        .dark-mode-toggle{display: flex; align-items: center;}
+        .dark-mode-checkbox{opacity: 0; position: absolute;}
+        .dark-mode-label{width: 50px; height: 26px; background-color: #111; display: flex; border-radius: 50px; align-items: center; justify-content: space-between; padding: 5px; position: relative; transform: scale(1.5); cursor: pointer;}
+        .dark-mode-label .fa-sun{color: #f39c12;}
+        .dark-mode-label .fa-moon{color: #f1c40f;}
+        .dark-mode-checkbox:checked + .dark-mode-label .ball{transform: translateX(24px);}
+        .ball{width: 22px; height: 22px; background-color: #fff; position: absolute; left: 2px; border-radius: 50%; transition: transform 0.2s linear;}
+
+        .contact-section{padding: 100px 20px; background-color: #f5f5f5; transition: background-color 0.3s;}
+        .dark-mode .contact-section{background-color: #2a2a2a;}
+        .contact-container{max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 50px;}
+        .contact-info, .contact-form{flex: 1;}
+        .section-title{font-size: 36px; margin-bottom: 30px; color: #333; transition: color 0.3s;}
+        .dark-mode .section-title{color: #fff;}
+        .contact-info p{margin-bottom: 20px; font-size: 18px; color: #666; transition: color 0.3s;}
+        .dark-mode .contact-info p{color: #ccc;}
+        .contact-info i{margin-right: 10px; color: #ffd700;}
+        .contact-form form{display: flex; flex-direction: column; gap: 20px;}
+        .contact-form input, .contact-form textarea{padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;}
+        .contact-form textarea{height: 150px;}
+        .contact-form button{padding: 15px 30px; background-color: #ffd700; color: #000; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; transition: background-color 0.3s;}
+        .contact-form button:hover{background-color: #e5c100;}
+
+        footer{background-color: #333; color: #fff; padding: 40px 20px; text-align: center;}
+        .social-links{margin-top: 20px;}
+        .social-links a{color: #fff; font-size: 24px; margin: 0 10px; transition: color 0.3s;}
+        .social-links a:hover{color: #ffd700;}
+
+        .tips-newsletter-section{padding: 80px 20px; background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);}
+        .dark-mode .tips-newsletter-section{background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);}
+        .container{max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px;}
+        .tips-container, .newsletter-container{flex: 1; min-width: 300px;}
+        .section-title{font-size: 32px; font-family: 'Times New Roman'; margin-bottom: 30px; color: #333; text-align: center;}
+        .dark-mode .section-title{color: #fff;}
+        .tips-grid{display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;}
+        .tip-card{background-color: #fff; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease;}
+        .dark-mode .tip-card{background-color: #333; box-shadow: 0 2px 15px rgba(255,255,255,0.1);}
+        .tip-card:hover{transform: translateY(-5px);}
+        .tip-card i{font-size: 30px; color: #ffd700; margin-bottom: 15px;}
+        .tip-card h3{color: #333; margin-bottom: 10px; font-size: 18px;}
+        .dark-mode .tip-card h3{color: #ffd700;}
+        .tip-card p{color: #666; font-size: 14px; line-height: 1.4;}
+        .dark-mode .tip-card p{color: #ccc;}
+        .newsletter-desc{font-size: 16px; color: #666; margin-bottom: 20px;}
+        .dark-mode .newsletter-desc{color: #ccc;}
+        .newsletter-form{background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.1);}
+        .dark-mode .newsletter-form{background-color: #333; box-shadow: 0 2px 15px rgba(255,255,255,0.1);}
+        .form-group{display: flex; gap: 10px; margin-bottom: 15px;}
+        .newsletter-form input{flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;}
+        .dark-mode .newsletter-form input{background-color: #444; border-color: #555; color: #fff;}
+        .newsletter-form button{padding: 12px 25px; background-color: #ffd700; color: #333; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;}
+        .newsletter-form button:hover{background-color: #e5c100;}
+        .privacy-note{font-size: 12px; color: #666;}
+        .dark-mode .privacy-note{color: #999;}
+        @media (max-width: 768px){.container{flex-direction: column;} .tips-container, .newsletter-container{width: 100%;}}
+
+        .modal{display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;}
+        .modal-content{background-color: #fff; margin: 15% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center; position: relative;}
+        .dark-mode .modal-content{background-color: #333; color: #fff;}
+        .close{position: absolute; right: 20px; top: 10px; font-size: 28px; cursor: pointer; color: #666;}
+        .success-icon{font-size: 50px; color: #4CAF50; margin: 10px 0;}
+        .modal-content h2{margin: 10px 0;}
+        .modal-content button{padding: 10px 30px; background-color: #ffd700; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; font-size: 16px;}
+        .modal-content button:hover{background-color: #e5c100;}
+
+        #backToTop{display: none; position: fixed; bottom: 20px; right: 30px; z-index: 99; font-size: 18px; border: none; outline: none; background-color: #ffd700; color: #333; cursor: pointer; padding: 15px 20px; border-radius: 50%; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        #backToTop:hover{background-color: #ffed4a; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.3);}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo"> Explore Wonders </div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}"> Home </a>
+                <a href="{{ url_for('destinations') }}"> Destinations </a>
+                <a href="{{ url_for('services') }}"> Services </a>
+                <a href="{{ url_for('about') }}"> About </a>
+                <a href="{{ url_for('contact') }}"> Contact </a>
+                <a href="{{ url_for('loginpage') }}"> Login </a>
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" class="dark-mode-checkbox">
+                    <label for="darkModeToggle" class="dark-mode-label">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <div class="ball"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2 class="section-title"> Contact Us </h2>
+                <p><i class="fas fa-map-marker-alt"></i> 487 Brahmabrata Square, Dubashistad, Uttarakhand (593 559), India </p>
+                <p><i class="fas fa-phone"></i> +914658965748 </p>
+                <p><i class="fas fa-envelope"></i> info@explorewonders.com </p>
+                <p><i class="fas fa-clock"></i> <b> Visiting hours: </b> Mon-Fri: 9am - 6pm, Sat-Sun: 10am - 4pm</p>
+            </div>
+            <div class="contact-form">
+                <h2 class="section-title"> Send Us a Message </h2>
+                <form id="contactForm">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <input type="text" name="subject" placeholder="Subject" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit"> Send Message </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="tips-newsletter-section">
+        <div class="container">
+            <div class="tips-container">
+                <h2 class="section-title"> Essential Travel Tips </h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <i class="fas fa-passport"></i>
+                        <h3> Documentation </h3>
+                        <p> Always check visa requirements and keep your documents safe and easily accessible. </p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-suitcase-rolling"></i>
+                        <h3> Packing Smart </h3>
+                        <p> Pack light and smart. Make a checklist of essential items before your trip. </p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3> Travel Insurance</h3>
+                        <p> Don't forget to get travel insurance for a worry-free journey. </p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-globe"></i>
+                        <h3> Local Culture</h3>
+                        <p> Research about local customs and traditions before visiting a new place. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="newsletter-container">
+                <h2 class="section-title"> Subscribe for More Tips and offers </h2>
+                <p class="newsletter-desc"> Stay updated with our latest travel deals, destinations, and exclusive tips! </p>
+                <form class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit"> Subscribe </button>
+                    </div>
+                    <p class="privacy-note"> By subscribing, you agree to our Privacy Policy and Terms of Service. </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="subscriptionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2> Thank You! </h2>
+            <p> You have successfully subscribed to our newsletter. </p>
+            <button onclick="closeModal()"> OK </button>
+        </div>
+    </div>
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2> Message Sent! </h2>
+            <p> Thank you for contacting us. We'll get back to you soon. </p>
+            <button onclick="closeMessageModal()"> OK </button>
+        </div>
+    </div>
+
+    <button id="backToTop" title="Go to top"> ↑ </button>
+
+    <footer>
+        <p>&copy; 2024 Explore Wonders. All rights reserved. </p>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        const checkbox = document.getElementById('darkModeToggle');
+        const modal = document.getElementById('subscriptionModal');
+        const messageModal = document.getElementById('messageModal');
+        const newsletterForm = document.querySelector('.newsletter-form');
+        const contactForm = document.getElementById('contactForm');
+
+        checkbox.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        function openModal() {
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function openMessageModal() {
+            messageModal.style.display = 'block';
+        }
+
+        function closeMessageModal() {
+            messageModal.style.display = 'none';
+        }
+
+        modal.querySelector('.close').onclick = closeModal;
+        messageModal.querySelector('.close').onclick = closeMessageModal;
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+            if (event.target == messageModal) {
+                closeMessageModal();
+            }
+        }
+
+        newsletterForm.onsubmit = function(e) {
+            e.preventDefault();
+            const emailInput = this.querySelector('input[type="email"]');
+            emailInput.value = '';
+            openModal();
+        }
+
+        contactForm.onsubmit = function(e) {
+            e.preventDefault();
+            const inputs = this.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.value = '');
+            openMessageModal();
+        }
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("backToTop").style.display = "block";
+            } else {
+                document.getElementById("backToTop").style.display = "none";
+            }
+        }
+
+        document.getElementById("backToTop").onclick = function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+    </script>
+</body>
+</html>

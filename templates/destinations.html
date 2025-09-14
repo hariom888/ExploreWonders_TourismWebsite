@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Destinations </title>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+
+        body{transition: background-color 0.3s, color 0.3s;}
+        body.dark-mode{background-color: #1a1a1a; color: #fff;}
+
+        .navbar{background-color: rgba(0, 0, 0, 0.8); padding: 20px 50px; position: fixed; width: 100%; z-index: 1000;}
+        .nav-content{display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .logo{color: #fff; font-size: 28px; font-weight: bold;}
+        .nav-links{display: flex; gap: 30px; align-items: center;}
+        .nav-links a{color: #fff; text-decoration: none; font-size: 18px; transition: color 0.3s;}
+        .nav-links a:hover{color: #ffd700;}
+
+        .dark-mode-toggle{display: flex; align-items: center;}
+        .dark-mode-checkbox{opacity: 0; position: absolute;}
+        .dark-mode-label{width: 50px; height: 26px; background-color: #111; display: flex; border-radius: 50px; align-items: center; justify-content: space-between; padding: 5px; position: relative; transform: scale(1.5); cursor: pointer;}
+        .dark-mode-label .fa-sun{color: #f39c12;}
+        .dark-mode-label .fa-moon{color: #f1c40f;}
+        .dark-mode-checkbox:checked + .dark-mode-label .ball{transform: translateX(24px);}
+        .ball{width: 22px; height: 22px; background-color: #fff; position: absolute; left: 2px; border-radius: 50%; transition: transform 0.2s linear;}
+
+        .hero{height: 60vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1488085061387-422e29b40080?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1931&q=80'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;}
+        .hero-content{max-width: 800px; padding: 20px;}
+        .hero h1{font-size: 48px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);}
+        .hero p{font-size: 20px; margin-bottom: 30px;}
+
+        .destinations-container{padding: 80px 20px; max-width: 1400px; margin: 0 auto;}
+        .section-title{text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: #333; position: relative;}
+        .dark-mode .section-title{color: #fff;}
+        .section-title::after{content: ''; display: block; width: 100px; height: 3px; background: #ffd700; margin: 10px auto;}
+        .filter-container{display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;}
+        .filter-btn{padding: 10px 20px; border: 2px solid #ffd700; background: transparent; color: #333; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: bold;}
+        .dark-mode .filter-btn{color: #fff;}
+        .filter-btn.active, .filter-btn:hover{background: #ffd700; color: #000;}
+        .destinations-grid{display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;}
+        .destination-card{background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; position: relative;}
+        .dark-mode .destination-card{background: #333; box-shadow: 0 5px 15px rgba(255,255,255,0.1);}
+        .destination-card:hover{transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2);}
+        .card-image{position: relative; height: 250px; overflow: hidden;}
+        .card-image img{width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;}
+        .destination-card:hover .card-image img{transform: scale(1.1);}
+        .price-tag{position: absolute; top: 20px; right: 20px; background: #ffd700; padding: 8px 15px; border-radius: 25px; color: #000; font-weight: bold;}
+        .favorite-btn{position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.9); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;}
+        .favorite-btn:hover{background: #ff4757; color: white;}
+        .card-content{padding: 20px;}
+        .card-rating{color: #ffd700; margin-bottom: 10px;}
+        .card-details{display: flex; justify-content: space-between; margin: 15px 0; color: #666;}
+        .dark-mode .card-details{color: #ccc;}
+        .card-features{display: flex; gap: 15px; margin: 15px 0; color: #666;}
+        .dark-mode .card-features{color: #ccc;}
+        .card-actions{display: flex; gap: 15px; margin-top: 20px;}
+        .explore-btn{flex: 1; padding: 12px 25px; background: #ffd700; color: #000; border: none; border-radius: 25px; text-decoration: none; text-align: center; font-weight: bold; transition: all 0.3s;}
+        .explore-btn:hover{background: #ffed4a; transform: translateY(-2px);}
+
+        footer{background-color: #333; color: #fff; padding: 40px 20px; text-align: center;}
+        .social-links{margin-top: 20px;}
+        .social-links a{color: #fff; font-size: 24px; margin: 0 10px; transition: color 0.3s;}
+        .social-links a:hover{color: #ffd700;}
+
+        @media (max-width: 768px) {
+            .navbar{padding: 15px 20px;}
+            .nav-links{flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.9); display: none;}
+            .nav-links.active{display: flex;}
+            .nav-links a{padding: 15px; width: 100%; text-align: center;}
+            .hero h1{font-size: 36px;}
+            .hero p{font-size: 18px;}}
+        
+        #backToTop{display: none; position: fixed; bottom: 20px; right: 30px; z-index: 99; font-size: 18px; border: none; outline: none; background-color: #ffd700; color: #333; cursor: pointer; padding: 15px 20px; border-radius: 50%; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        #backToTop:hover{background-color: #ffed4a; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.3);}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo"> Explore Wonders </div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}"> Home </a>
+                <a href="{{ url_for('destinations') }}"> Destinations </a>
+                <a href="{{ url_for('services') }}"> Services </a>
+                <a href="{{ url_for('about') }}"> About </a>
+                <a href="{{ url_for('contact') }}"> Contact </a>
+                <a href="{{ url_for('loginpage') }}"> Login </a>
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" class="dark-mode-checkbox">
+                    <label for="darkModeToggle" class="dark-mode-label">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <div class="ball"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1> Explore Amazing Destinations </h1>
+            <p> Discover breathtaking places around the world and create unforgettable memories </p>
+        </div>
+    </section>
+
+    <section class="destinations-container">
+        <h2 class="section-title"> Popular Destinations </h2>
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all"> All </button>
+            <button class="filter-btn" data-filter="asia"> Asia </button>
+            <button class="filter-btn" data-filter="europe"> Europe </button>
+            <button class="filter-btn" data-filter="north-america"> North America </button>
+            <button class="filter-btn" data-filter="south-america"> South America </button>
+            <button class="filter-btn" data-filter="africa"> Africa </button>
+            <button class="filter-btn" data-filter="australia"> Australia </button>
+            <button class="filter-btn" data-filter="antarctica"> Antarctica </button>
+        </div>
+        <div class="destinations-grid">
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1661927190802-97d541e1d182?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kashmir">
+                    <div class="price-tag"> From $799 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Kashmir, India </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> India </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Discover the 'Heaven on Earth' with stunning landscapes, Dal Lake, Mughal gardens, and snow-capped peaks. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-home"></i> Houseboat Stay </span>
+                        <span><i class="fas fa-skiing"></i> Skiing </span>
+                        <span><i class="fas fa-mountain"></i> Trek </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Paris">
+                    <div class="price-tag"> From $999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.5) </span>
+                    </div>
+                    <h3> Paris, France </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 5 Days </span>
+                    </div>
+                    <p> Experience the romantic city of lights, iconic landmarks, and world-class cuisine. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-utensils"></i> Meals </span>
+                        <span><i class="fas fa-hotel"></i> Hotel </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1771&auto=format&fit=crop" alt="Rajasthan">
+                    <div class="price-tag"> From $899 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.8) </span>
+                    </div>
+                    <h3> Rajasthan, India </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> India </span>
+                        <span><i class="fas fa-clock"></i> 8 Days </span>
+                    </div>
+                    <p> Experience the majestic palaces, vibrant culture, desert safaris, and royal heritage of the Land of Kings. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-crown"></i> Palace Stay </span>
+                        <span><i class="fas fa-utensils"></i> Royal Cuisine </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="north-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?q=80&w=1770&auto=format&fit=crop" alt="New York">
+                    <div class="price-tag"> From $1299 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.6) </span>
+                    </div>
+                    <h3> New York City, USA </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> North America </span>
+                        <span><i class="fas fa-clock"></i> 6 Days </span>
+                    </div>
+                    <p> Experience the city that never sleeps with iconic landmarks and Broadway shows. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-subway"></i> Metro Pass </span>
+                        <span><i class="fas fa-hotel"></i> Hotel </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="africa">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?q=80&w=1771&auto=format&fit=crop" alt="Cape Town">
+                    <div class="price-tag"> From $849 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Cape Town, South Africa </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Africa </span>
+                        <span><i class="fas fa-clock"></i> 8 Days </span>
+                    </div>
+                    <p> Explore stunning beaches, Table Mountain, and rich cultural heritage. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-car"></i> Transport </span>
+                        <span><i class="fas fa-hotel"></i> Hotel </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="australia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=1770&auto=format&fit=crop" alt="Sydney">
+                    <div class="price-tag"> From $1499 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Sydney, Australia </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Australia </span>
+                        <span><i class="fas fa-clock"></i> 10 Days </span>
+                    </div>
+                    <p> Visit the iconic Opera House, beautiful harbors, and amazing wildlife. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-swimmer"></i> Beach </span>
+                        <span><i class="fas fa-hotel"></i> Hotel </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=1770&auto=format&fit=crop" alt="Venice">
+                    <div class="price-tag"> From $1099 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.8) </span>
+                    </div>
+                    <h3> Venice, Italy </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Get lost in the romantic canals, historic landmarks, and artistic treasures. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-monument"></i> Monuments </span>
+                        <span><i class="fas fa-hotel"></i> Hotel </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?q=80&w=1774&auto=format&fit=crop" alt="Santorini">
+                    <div class="price-tag"> From $1299 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Santorini, Greece </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 6 Days </span>
+                    </div>
+                    <p> Discover white-washed buildings, blue domes, and breathtaking Mediterranean sunsets. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-umbrella-beach"></i> Beach </span>
+                        <span><i class="fas fa-hotel"></i> Villa </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1632&auto=format&fit=crop" alt="Kerala">
+                    <div class="price-tag"> From $799 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Kerala Backwaters, India </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> India </span>
+                        <span><i class="fas fa-clock"></i> 5 Days </span>
+                    </div>
+                    <p> Cruise through serene backwaters, enjoy Ayurvedic treatments, and experience local culture. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-spa"></i> Ayurveda </span>
+                        <span><i class="fas fa-ship"></i> Houseboat </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>    
+            
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1462651567147-aa679fd1cfaf?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Switzerland">
+                    <div class="price-tag"> From $1299 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Switzerland </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 10 Days </span>
+                    </div>
+                    <p> Explore stunning landscapes, charming villages, and the majestic Alps. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-mountain"></i> Mountain Tours </span>
+                        <span><i class="fas fa-train"></i> Scenic Train Rides </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1520681279154-51b3fb4ea0f7?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Finland">
+                    <div class="price-tag"> From $1099 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Finland </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Experience the beauty of the Northern Lights, stunning lakes, and vibrant culture. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-snowflake"></i> Winter Activities </span>
+                        <span><i class="fas fa-fish"></i> Fishing Tours </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Vietnam">
+                    <div class="price-tag"> From $799 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.8) </span>
+                    </div>
+                    <h3> Vietnam </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Asia </span>
+                        <span><i class="fas fa-clock"></i> 12 Days </span>
+                    </div>
+                    <p> Discover the vibrant cities, stunning beaches, and rich cultural heritage. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-dragon"></i> Temple Tours </span>
+                        <span><i class="fas fa-bicycle"></i> Cycling Tours </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="europe">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1476786516785-c3ff2dac9bbf?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Spain">
+                    <div class="price-tag"> From $999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Spain </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Europe </span>
+                        <span><i class="fas fa-clock"></i> 10 Days </span>
+                    </div>
+                    <p> Experience the vibrant cities, stunning beaches, and rich cultural heritage. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-gopuram"></i> Art and Architecture </span>
+                        <span><i class="fas fa-wine-glass"></i> Wine Tasting </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="africa">
+                <div class="card-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1663133765719-5e7485c34d02?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Johannesburg">
+                    <div class="price-tag"> From $699 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Johannesburg </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Africa </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Experience the vibrant city life, rich history, and stunning natural beauty. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-gopuram"></i> Cultural Heritage </span>
+                        <span><i class="fas fa-hiking"></i> Hiking Adventures </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/flagged/photo-1559717201-fbb671ff56b7?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dubai">
+                    <div class="price-tag"> From $999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Dubai, UAE </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Asia </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Experience the luxurious city life, stunning architecture, and vibrant culture. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-city"></i> City Tours </span>
+                        <span><i class="fas fa-shopping-bag"></i> Luxury Shopping </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="asia">
+                <div class="card-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1661881114924-536307040c49?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Phuket">
+                    <div class="price-tag"> From $999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Phuket, Thailand </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Asia </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Relax on stunning beaches, explore vibrant night markets, and enjoy water sports. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-swimmer"></i> Snorkeling and Diving </span>
+                        <span><i class="fas fa-city"></i> Night Markets and Bars </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="australia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1444841461048-410031d44215?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Melbourne">
+                    <div class="price-tag"> From $899 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Melbourne </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Australia </span>
+                        <span><i class="fas fa-clock"></i> 7 Days </span>
+                    </div>
+                    <p> Experience the cultural capital of Australia, with its vibrant arts scene and stunning beaches. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-mask"></i> Cultural Attractions </span>
+                        <span><i class="fas fa-utensils"></i> Food and Wine Tours </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="australia">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1706065495724-60ed0d69460e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Hobart">
+                    <div class="price-tag"> From $699 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Hobart </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Australia </span>
+                        <span><i class="fas fa-clock"></i> 5 Days </span>
+                    </div>
+                    <p> Discover the charming waterfront, historic harbor, and stunning natural beauty. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-hiking"></i> Hiking and Outdoor Activities </span>
+                        <span><i class="fas fa-glass-cheers"></i> Food and Wine Tours </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="north-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1587223043646-fa771d9e0c8b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Las Vegas">
+                    <div class="price-tag"> From $499 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.6) </span>
+                    </div>
+                    <h3> Las Vegas </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> North America </span>
+                        <span><i class="fas fa-clock"></i> 4 Days </span>
+                    </div>
+                    <p> Experience the vibrant nightlife, stunning shows, and luxurious casinos. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-mask"></i> Show and Entertainment </span>
+                        <span><i class="fas fa-wine-glass"></i> Nightlife and Bars </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="north-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1454238554694-bb0049b8dc5a?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Los Angeles">
+                    <div class="price-tag"> From $499 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.6) </span>
+                    </div>
+                    <h3> Los Angeles </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> North America </span>
+                        <span><i class="fas fa-clock"></i> 5 Days </span>
+                    </div>
+                    <p> Explore the iconic Hollywood, stunning beaches, and vibrant cultural attractions. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-swimmer"></i> Beach Relaxation </span>
+                        <span><i class="fas fa-glass-cheers"></i> Cultural Attractions </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="north-america">
+                <div class="card-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1697729819435-046df3291307?q=80&w=1975&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dallas">
+                    <div class="price-tag"> From $599 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Dallas </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> North America </span>
+                        <span><i class="fas fa-clock"></i> 4 Days </span>
+                    </div>
+                    <p> Experience the cowboy culture, vibrant arts scene, and delicious Tex-Mex cuisine. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-brush"></i> Arts and Culture </span>
+                        <span><i class="fas fa-utensils"></i> Tex-Mex Cuisine </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="south-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1692818809076-e3adfc9e8db7?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Argentina">
+                    <div class="price-tag"> From $999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Argentina </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> South America </span>
+                        <span><i class="fas fa-clock"></i> 10 Days </span>
+                    </div>
+                    <p> Experience the vibrant cities, stunning natural beauty, and rich cultural heritage. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-mountain"></i> Hiking and Outdoor Activities </span>
+                        <span><i class="fas fa-wine-glass"></i> Wine Tasting </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="south-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Brazil">
+                    <div class="price-tag"> From $1099 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.8) </span>
+                    </div>
+                    <h3> Brazil </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> South America </span>
+                        <span><i class="fas fa-clock"></i> 12 Days </span>
+                    </div>
+                    <p> Experience the vibrant cities, stunning beaches, and rich cultural heritage. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-city"></i> City Tours </span>
+                        <span><i class="fas fa-swimmer"></i> Beach Relaxation </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="south-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Peru">
+                    <div class="price-tag"> From $899 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.9) </span>
+                    </div>
+                    <h3> Peru </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> South America </span>
+                        <span><i class="fas fa-clock"></i> 11 Days </span>
+                    </div>
+                    <p> Explore the ancient Inca ruins, stunning natural beauty, and vibrant culture. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-archway"></i> Inca Ruins </span>
+                        <span><i class="fas fa-mountain"></i> Hiking and Outdoor Activities </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="south-america">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1641736047569-647d412aac70?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bolivia">
+                    <div class="price-tag"> From $749 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Bolivia </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> South America </span>
+                        <span><i class="fas fa-clock"></i> 10 Days </span>
+                    </div>
+                    <p> Discover the breathtaking landscapes of the Salar de Uyuni, rich indigenous culture, and vibrant cities. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-mountain"></i> Andes Mountains </span>
+                        <span><i class="fas fa-people-arrows"></i> Cultural Experiences </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="destination-card" data-category="antarctica">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1645879846549-831e1f3be73d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Antarctica - Expedition Cruise">
+                    <div class="price-tag"> From $5,999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span> (5.0) </span>
+                    </div>
+                    <h3> Antarctic Expedition Cruise </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Antarctica </span>
+                        <span><i class="fas fa-clock"></i> 12 Days </span>
+                    </div>
+                    <p> Experience the untouched beauty of Antarctica with stunning icebergs and diverse wildlife. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-ice-cream"></i> Icebergs </span>
+                        <span><i class="fas fa-ship"></i> Cruise Adventure </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-card" data-category="antarctica">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1551415923-58aba9efeb2d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Antarctica - Wildlife Adventure">
+                    <div class="price-tag"> From $4,500 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.8) </span>
+                    </div>
+                    <h3> Wildlife Adventure in Antarctica </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Antarctica </span>
+                        <span><i class="fas fa-clock"></i> 9 Days </span>
+                    </div>
+                    <p> Get up close with seals, whales, and penguins in their natural habitat. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-paw"></i> Wildlife Encounters </span>
+                        <span><i class="fas fa-hiking"></i> Guided Excursions </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-card" data-category="antarctica">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1544630717-fff6313ea1d3?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Antarctica - Photography Tour ">
+                    <div class="price-tag"> From $6,999 </div>
+                    <div class="favorite-btn"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (4.7) </span>
+                    </div>
+                    <h3> Antarctica Photography Tour </h3>
+                    <div class="card-details">
+                        <span><i class="fas fa-map-marker-alt"></i> Antarctica </span>
+                        <span><i class="fas fa-clock"></i> 11 Days </span>
+                    </div>
+                    <p> Capture the breathtaking landscapes and wildlife of Antarctica with expert photography guides. </p>
+                    <div class="card-features">
+                        <span><i class="fas fa-camera"></i> Photography Expertise </span>
+                        <span><i class="fas fa-ice-cream"></i> Unique Landscapes </span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="explore-btn"> Explore Now </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" title="Go to top"> ↑ </button>
+
+    <footer>
+        <p>&copy; 2024 Explore Wonders. All rights reserved. </p>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+    
+            function toggleDarkMode() {
+                document.body.classList.toggle("dark-mode");
+            }
+
+            darkModeToggle.addEventListener('change', toggleDarkMode);
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const destinationCards = document.querySelectorAll('.destination-card');
+
+        filterBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach((btn) => btn.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+                destinationCards.forEach((card) => {
+                    if (filterValue === 'all') {
+                        card.style.display = 'block';
+                    } else if (card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("backToTop").style.display = "block";
+            } else {
+                document.getElementById("backToTop").style.display = "none";
+            }
+        }
+
+
+        document.getElementById("backToTop").onclick = function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+    </script>
+</body>
+</html>

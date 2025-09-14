@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Register Now </title>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+        body{background-image: url("https://wallpaperaccess.com/full/2465604.jpg"); background-size: cover; min-height: 100vh; margin: 0;}
+        .wrapper{width: 650px; height: 870px; background-color: rgba(255, 255, 255, 0.8); border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 25px; margin: 50px auto;}
+        .register_box{width: 100%; padding: 20px;}
+        .register-header{font-size: 45px; margin-bottom: 30px; text-align: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); padding: 10px;}
+        .input_box{position: relative; margin-bottom: 20px;}
+        .input-field{width: 100%; padding: 10px; font-size: 30px; border: 1px solid #ccc; border-radius: 10px;}
+        .input-field:focus{border-color: #aaa; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}
+        .label{font-size: 25px; color: black;}
+        .input-field:focus{font-size: 30px; color: #666;}
+        .icon{position: absolute; top: 10px; right: 10px; font-size: 20px; color: #aaa;}
+        .input-submit{width: 100%; padding: 10px; font-size: 30px; border: none; border-radius: 10px; background-color: #4CAF50; color: #fff; cursor: pointer;}
+        .input-submit:hover{background-color: #3e8e41;}
+        .login-link{text-align: center; margin-top: 20px; font-size: 25px;}
+        .login-link a{text-decoration: none; color: #666;}
+        .login-link a:hover{color: #333;}
+        .back-to-home{text-align: center; margin-top: 20px; font-size: 25px;}
+        .back-to-home a{text-decoration: none; color: #666;}
+        .back-to-home a:hover{color: #333;}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="register_box">
+            <form onsubmit="return validateForm()">
+                <div class="register-header">
+                    <span> <b> REGISTER NOW </b> </span>
+                </div>
+                <div class="input_box">
+                    <label for="fullname" class="label"> <span class="iconify" data-icon="mdi-account"></span> Full Name </label>
+                    <input type="text" id="fullname" name="fullname" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <label for="email" class="label"> <span class="iconify" data-icon="mdi-email"></span> Email </label>
+                    <input type="email" id="email" name="email" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <label for="username" class="label"> <span class="iconify" data-icon="mdi-account-circle"></span> Username </label>
+                    <input type="text" id="username" name="username" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <label for="password" class="label"> <span class="iconify" data-icon="mdi-key"></span> Password </label>
+                    <input type="password" id="password" name="password" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <label for="confirm_password" class="label"> <span class="iconify" data-icon="mdi-key-plus"></span> Confirm Password </label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="input-field" required>
+                </div>
+                <div class="input_box">
+                    <input type="submit" class="input-submit" value="Register">
+                </div>
+            </form>
+            <div class="login-link">
+                <span> Already have an account? <a href="{{ url_for('loginpage') }}"> Login </a> </span>
+            </div>
+            <div class="back-to-home">
+                <a href="{{ url_for('home') }}"> Back to Home </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function validateForm() {
+        const fullname = document.getElementById("fullname").value;
+        const email = document.getElementById("email").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+        
+        const namePattern = /^[A-Za-z\s]{3,}$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const usernamePattern = /^[A-Za-z0-9_]{3,}$/;
+        
+        if (!namePattern.test(fullname)) {
+            alert("Full name must be at least 3 characters long and contain only letters and spaces.");
+            return false;
+        }
+        
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        
+        if (!usernamePattern.test(username)) {
+            alert("Username must be at least 3 characters long and can only contain letters, numbers, and underscores.");
+            return false;
+        }
+        
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long.");
+            return false;
+        }
+        
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+        
+        if (confirm("Confirm registration?")) {
+            alert("Registration successful! Please log in with your new account.");
+            window.location.href = "{{ url_for('loginpage') }}";
+            return false;
+        }
+        return false;
+    }
+    </script>
+</body>
+</html>

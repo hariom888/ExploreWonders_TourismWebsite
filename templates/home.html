@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Explore Wonders - Tourism </title>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+
+        body{transition: background-color 0.3s, color 0.3s;}
+        body.dark-mode{background-color: #1a1a1a; color: #fff;}
+
+        .navbar{background-color: rgba(0, 0, 0, 0.8); padding: 20px 50px; position: fixed; width: 100%; z-index: 1000;}
+        .nav-content{display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;}
+        .logo{color: #fff; font-size: 28px; font-weight: bold;}
+        .nav-links{display: flex; gap: 30px; align-items: center;}
+        .nav-links a{color: #fff; text-decoration: none; font-size: 18px; transition: color 0.3s;}
+        .nav-links a:hover{color: #ffd700;}
+
+        .dark-mode-toggle{display: flex; align-items: center;}
+        .dark-mode-checkbox{opacity: 0; position: absolute;}
+        .dark-mode-label{width: 50px; height: 26px; background-color: #111; display: flex; border-radius: 50px; align-items: center; justify-content: space-between; padding: 5px; position: relative; transform: scale(1.5); cursor: pointer;}
+        .dark-mode-label .fa-sun{color: #f39c12;}
+        .dark-mode-label .fa-moon{color: #f1c40f;}
+        .dark-mode-checkbox:checked + .dark-mode-label .ball{transform: translateX(24px);}
+        .ball{width: 22px; height: 22px; background-color: #fff; position: absolute; left: 2px; border-radius: 50%; transition: transform 0.2s linear;}
+
+        .hero{height: 100vh; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;}
+        .hero-content{max-width: 800px; padding: 20px;}
+        .hero h1{font-size: 60px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);}
+        .hero p{font-size: 24px; margin-bottom: 30px;}
+        .cta-button{padding: 15px 30px; font-size: 20px; background-color: #ffd700; color: #000; border: none; border-radius: 30px; cursor: pointer; transition: transform 0.3s;}
+        .cta-button:hover{transform: scale(1.1);}
+
+        .destinations{padding: 80px 20px; background-color: #f5f5f5; transition: background-color 0.3s;}
+        .dark-mode .destinations{background-color: #2a2a2a;}
+        .section-title{text-align: center; font-size: 36px; margin-bottom: 50px; color: #333; transition: color 0.3s;}
+        .dark-mode .section-title{color: #fff;}
+        .destination-grid{display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; padding: 0 20px;}
+        .destination-card{background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s, background-color 0.3s;}
+        .dark-mode .destination-card{background: #333; box-shadow: 0 5px 15px rgba(255,255,255,0.1);}
+        .destination-card:hover{transform: translateY(-10px);}
+        .destination-card img{width: 100%; height: 200px; object-fit: cover;}
+        .card-content{padding: 20px;}
+        .card-content h3{font-size: 24px; margin-bottom: 10px; color: #333; transition: color 0.3s;}
+        .dark-mode .card-content h3{color: #fff;}
+        .card-content p{color: #666; margin-bottom: 15px; transition: color 0.3s;}
+        .dark-mode .card-content p{color: #ccc;}
+        .price{color: #4CAF50; font-size: 20px; font-weight: bold;}
+
+        .services{padding: 80px 20px; background-color: #fff; transition: background-color 0.3s;}
+        .dark-mode .services{background-color: #1a1a1a;}
+        .services-grid{display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;}
+        .service-card{background: #f9f9f9; border-radius: 15px; padding: 30px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .dark-mode .service-card{background: #2a2a2a; box-shadow: 0 5px 15px rgba(255,255,255,0.1);}
+        .service-card:hover{transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2);}
+        .service-card i{font-size: 48px; color: #ffd700; margin-bottom: 20px;}
+        .service-card h3{font-size: 24px; margin-bottom: 15px; color: #333; transition: color 0.3s;}
+        .dark-mode .service-card h3{color: #fff;}
+        .service-card p{color: #666; margin-bottom: 20px; transition: color 0.3s;}
+        .dark-mode .service-card p{color: #ccc;}
+        .service-link{display: inline-block; color: #ffd700; text-decoration: none; font-weight: bold; transition: color 0.3s;}
+        .service-link:hover{color: #ffed4a;}
+        .service-link i{font-size: 14px; margin-left: 5px;}
+
+        footer{background-color: #333; color: #fff; padding: 40px 20px; text-align: center;}
+        .social-links{margin-top: 20px;}
+        .social-links a{color: #fff; font-size: 24px; margin: 0 10px; transition : color 0.3s;}
+        .social-links a:hover{color: #ffd700;}
+
+        .newsletter{background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3') 
+        center/cover no-repeat; padding: 80px 20px; color: white; text-align: center;}
+        .newsletter-container{max-width: 800px; margin: 0 auto; padding: 40px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);}
+        .newsletter-title{font-size: 2.5em; margin-bottom: 20px; color: #ffd700;}
+        .newsletter-subtitle{font-size: 1.2em; margin-bottom: 30px; color: #fff;}
+        .newsletter form{display: flex; gap: 20px; flex-direction: column;}
+        .input-group{display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;}
+        .newsletter input{flex: 1; min-width: 250px; padding: 15px; border: none; border-radius: 8px; background: rgba(255, 255, 255, 0.9); font-size: 16px; transition: transform 0.3s, box-shadow 0.3s;}
+        .newsletter-input:focus{outline: none; transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);}
+        .newsletter-button{background: #ffd700; color: #000; padding: 15px 30px; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin: 20px auto; width: fit-content;}
+        .newsletter-button:hover{background: #ffed4a; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);}
+        .newsletter-features{display: flex; justify-content: center; gap: 30px; margin-top: 30px; flex-wrap: wrap;}
+        .feature{display: flex; align-items: center; gap: 10px; color: #fff;}
+        .feature i{color: #ffd700;}
+        @media (max-width: 768px){.input-group{flex-direction: column;} .newsletter-input{width: 100%;} .newsletter-features{flex-direction: column; gap: 15px;}}
+
+        #backToTop{display: none; position: fixed; bottom: 20px; right: 30px; z-index: 99; font-size: 18px; border: none; outline: none; background-color: #ffd700; color: #333; cursor: pointer; padding: 15px 20px; border-radius: 50%; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        #backToTop:hover{background-color: #ffed4a; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.3);}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo"> Explore Wonders </div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}"> Home </a>
+                <a href="{{ url_for('destinations') }}"> Destinations </a>
+                <a href="{{ url_for('services') }}"> Services </a>
+                <a href="{{ url_for('about') }}"> About </a>
+                <a href="{{ url_for('contact') }}"> Contact </a>
+                <a href="{{ url_for('loginpage') }}"> Login </a>
+                <div class="dark-mode-toggle">
+                    <input type="checkbox" id="darkModeToggle" class="dark-mode-checkbox">
+                    <label for="darkModeToggle" class="dark-mode-label">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                        <div class="ball"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1> Discover the World's wonders </h1>
+            <p> Experience unforgettable adventures and create lasting memories </p>
+            <button class="cta-button" onclick="window.location.href='loginpage.html'"> Start Your Journey </button>
+        </div>
+    </section>
+
+    <section class="destinations" id="destinations">
+        <h2 class="section-title"> Popular Destinations </h2>
+        <div class="destination-grid">
+            <div class="destination-card">
+                <img src="https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Paris">
+                <div class="card-content">
+                    <h3> Paris, France </h3>
+                    <p> Experience the city of love and its iconic landmarks </p>
+                    <span class="price"> From $999 </span>
+                </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1602940659805-770d1b3b9911?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="New York">
+                <div class="card-content">
+                    <h3> New York City, USA </h3>
+                    <p> Explore the city that never sleeps and its iconic skyline </p>
+                    <span class="price"> From $1299 </span>
+                </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://plus.unsplash.com/premium_photo-1661962514590-7cfa4f3d446d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Rajasthan">
+                <div class="card-content">
+                    <h3> Rajasthan, India </h3>
+                    <p> Uncover the land where legends come alive and forts touch the sky </p>
+                    <span class="price"> From $899 </span>
+                </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://plus.unsplash.com/premium_photo-1697730277839-440df1a4415f?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kashmir">
+                <div class="card-content">
+                    <h3> Kashmir, India </h3>
+                    <p> Unveil the land of timeless beauty, where nature's wonders soar to new heights </p>
+                    <span class="price"> From $799 </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="section-title"> Our Services </h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-plane"></i>
+                <h3> Flight Booking </h3>
+                <p> Book your flights with us and enjoy exclusive discounts and priority boarding. </p>
+                <a href="{{ url_for('services') }}" class="service-link">Learn More <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-hotel"></i>
+                <h3> Luxury Accommodations </h3>
+                <p> Choose from our curated selection of premium hotels and resorts worldwide. </p>
+                <a href="{{ url_for('services') }}" class="service-link">Explore Options <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-car"></i>
+                <h3> Premium Car Rental </h3>
+                <p> Rent luxury vehicles and explore your destination in style and comfort. </p>
+                <a href="{{ url_for('services') }}" class="service-link">View Fleet <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3> Personalized Tours </h3>
+                <p> Immerse yourself in local culture with our expert-led, personalized tours. </p>
+                <a href="{{ url_for('services') }}" class="service-link">Book a Tour <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="newsletter-container">
+            <h2 class="newsletter-title"> Subscribe to Our Newsletter </h2>
+            <p class="newsletter-subtitle"> Get exclusive deals, travel tips, and destination updates delivered directly to your inbox! </p>
+            <form id="newsletter-form" onsubmit="return subscribeNewsletter(event)" class="newsletter-form">
+                <div class="input-group">
+                    <input type="text" placeholder="Enter your name" required class="newsletter-input">
+                    <input type="email" placeholder="Enter your email" required class="newsletter-input">
+                    <select class="newsletter-input" required>
+                        <option value=""> Select your interests </option>
+                        <option value="adventure"> Adventure Travel </option>
+                        <option value="luxury"> Luxury Vacations </option>
+                        <option value="budget"> Budget Travel </option>
+                        <option value="cultural"> Cultural Experiences </option>
+                    </select>
+                </div>
+                <button type="submit" class="newsletter-button">
+                    <span> Subscribe Now </span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+            <div class="newsletter-features">
+                <div class="feature">
+                    <i class="fas fa-lock"></i>
+                    <span> 100% Secure </span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-times-circle"></i>
+                    <span> Unsubscribe Anytime </span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-envelope"></i>
+                    <span> Weekly Updates </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" title="Go to top"> ↑ </button>
+
+    <footer>
+        <p>&copy;  2024 Explore Wonders. All rights reserved. </p>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+    
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        darkModeToggle.addEventListener('change', toggleDarkMode);
+        });
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("backToTop").style.display = "block";
+            } else {
+                document.getElementById("backToTop").style.display = "none";
+            }
+        }
+
+        document.getElementById("backToTop").onclick = function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const form = document.getElementById("newsletter-form");
+            const name = form.elements[0].value;
+            const email = form.elements[1].value;
+            const interests = form.elements[2].value;
+
+            const confirmationHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-check-circle" style="color: #ffd700; font-size: 48px;"></i>
+                <h3 style="margin: 15px 0;">Thank you for subscribing, ${name}!</h3>
+                <p>We'll send updates about ${interests} travel to ${email}</p>
+            </div>
+            `;
+    
+            const newsletter = document.querySelector('.newsletter-container');
+            newsletter.innerHTML = confirmationHTML;
+
+            setTimeout(() => {
+                form.reset();
+            }, 5000);
+
+            return false;
+        }
+    </script>
+</body>
+</html>
